@@ -4,7 +4,7 @@ import sys
 
 def main():
     """Точка входа для Django-команд."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django-kubernetes-app.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_app.settings")
 
     try:
         from django.core.management import execute_from_command_line
