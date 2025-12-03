@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django
+  namespace: django
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "django-role"
+        vault.hashicorp.com/agent-inject-secret-config: "django/app"
+        vault.hashicorp.com/agent-inject-template-config: |
+          {{- with secret "django/app" -}}
+          SECRET_KEY="{{ .Data.data.SECRET_KEY }}"
+          DEBUG="{{ .Data.data.DEBUG }}"
+          {{- end }}
+    spec:
+      serviceAccountName: django
+      containers:
+        - name: django
+          image: ghcr.io/<your_username>/<repo>:latest
+          ports:
+            - containerPort: 8000
