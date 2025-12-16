@@ -31,6 +31,9 @@ jobs:
           ghcr.io/${{ github.repository }}:latest
           ghcr.io/${{ github.repository }}:${{ github.sha }}
 
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v3
+
     - name: Configure kubectl
       run: |
         mkdir -p ~/.kube
